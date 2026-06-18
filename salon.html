@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salon — Wien</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:   #1a1714;
+      --cream:  #f0ebe3;
+      --rose:   #e8a87c;
+      --rose-d: #c4855a;
+      --muted:  #7a7068;
+      --serif:  'EB Garamond', Georgia, serif;
+      --sans:   'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--dark);
+      color: var(--cream);
+      font-family: var(--serif);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 28px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      mix-blend-mode: normal;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: var(--cream);
+    }
+    .nav-eye {
+      transition: transform .6s ease;
+    }
+    .nav-eye:hover .eye-lid {
+      animation: quick-blink .4s ease forwards;
+    }
+    .nav-wordmark {
+      font-family: var(--serif);
+      font-size: 18px; font-weight: 400; letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .nav-cta {
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 400; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--cream);
+      border-bottom: 1px solid var(--rose);
+      padding-bottom: 2px; text-decoration: none;
+      transition: color .2s, border-color .2s;
+    }
+    .nav-cta:hover { color: var(--rose); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100svh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 120px 48px 80px;
+      position: relative; overflow: hidden;
+    }
+
+    /* Subtle grain overlay */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; opacity: .5;
+    }
+
+    .hero-eye-wrap {
+      margin-bottom: 48px;
+      position: relative;
+    }
+
+    /* Blinking eye */
+    .eye-svg {
+      overflow: visible;
+    }
+    .eye-lid-group {
+      animation: blink 5s ease-in-out infinite;
+      transform-origin: 110px 70px;
+    }
+    @keyframes blink {
+      0%, 80%, 100% { transform: scaleY(1); }
+      88%           { transform: scaleY(0.04); }
+      92%           { transform: scaleY(1); }
+      96%           { transform: scaleY(0.04); }
+    }
+    @keyframes quick-blink {
+      0%, 100% { transform: scaleY(1); }
+      50%      { transform: scaleY(0.04); }
+    }
+
+    .hero-label {
+      font-family: var(--sans);
+      font-size: 10px; font-weight: 400; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--rose);
+      margin-bottom: 28px;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(52px, 8vw, 110px);
+      font-weight: 400; line-height: 1;
+      letter-spacing: .04em; text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 36px;
+    }
+
+    .hero-tagline {
+      font-family: var(--serif);
+      font-size: clamp(17px, 2.2vw, 24px);
+      font-weight: 400; font-style: italic;
+      color: var(--cream); opacity: .75;
+      max-width: 560px; line-height: 1.6;
+      margin-bottom: 56px;
+    }
+
+    .hero-date {
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 400; letter-spacing: .22em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .hero-date span { color: var(--rose); }
+
+    .scroll-hint {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .scroll-hint-line {
+      width: 1px; height: 48px; background: var(--rose);
+      animation: grow 2s ease-in-out infinite;
+      transform-origin: top;
+    }
+    @keyframes grow {
+      0%, 100% { transform: scaleY(0); opacity: 0; }
+      50%      { transform: scaleY(1); opacity: 1; }
+    }
+
+    /* ── THESE SECTION ── */
+    #these {
+      padding: 120px 48px;
+      max-width: 900px; margin: 0 auto;
+      text-align: center;
+    }
+    .section-num {
+      font-family: var(--sans);
+      font-size: 10px; font-weight: 400; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--rose); margin-bottom: 48px;
+      display: block;
+    }
+    .these-quote {
+      font-family: var(--serif);
+      font-size: clamp(26px, 3.5vw, 46px);
+      font-weight: 400; font-style: italic;
+      line-height: 1.35; color: var(--cream);
+      margin-bottom: 36px;
+    }
+    .these-attr {
+      font-family: var(--sans);
+      font-size: 11px; font-weight: 400; letter-spacing: .18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .these-body {
+      margin-top: 64px; font-size: 18px; line-height: 1.85;
+      color: rgba(240,235,227,.7); max-width: 680px; margin-inline: auto;
+      margin-top: 64px;
+    }
+    .these-body p + p { margin-top: 20px; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, var(--rose), transparent);
+      margin: 0;
+    }
+
+    /* ── WAS IST DER SALON ── */
+    #salon {
+      background: var(--cream);
+      color: var(--dark);
+      padding: 120px 48px;
+    }
+    .salon-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    }
+    .salon-left { position: sticky; top: 120px; }
+    .salon-label {
+      font-family: var(--sans);
+      font-size: 10px; font-weight: 400; letter-spacing: .28em;
+      text-transform: uppercase; color: var(--rose-d); margin-bottom: 24px;
+      display: block;
+    }
+    .salon-heading {
+      font-family: var(--serif);
+      font-size: clamp(38px, 5vw, 64px);
+      font-weight: 400; line-height: 1.1;
+      color: var(--dark);
+    }
+    .salon-heading em {
+      font-style: italic; color: var(--rose-d);
+    }
+    .salon-sub {
+      margin-top: 24px;
+      font-family: var(--sans);
+      font-size: 12px; font-weight: 400; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--muted); line-height: 1.8;
+    }
+
+    .salon-right { }
+    .salon-block + .salon-block { margin-top: 48px; padding-top: 48px; border-top: 1px solid #d4cec6; }
+    .salon-block-title {
+      font-family: var(--sans);
+      font-size: 10px; font-weight: 500; letter-spacing: .24em;
+      text-transform: uppercase; color: var(--rose-d); margin-bottom: 14px;
+    }
+    .salon-block-body {
+      font-family: var(--serif);
+      font-size: 18px; line-height: 1.85; color: #2c2825;
+    }
+    .salon-block-body p + p { margin-top: 14px; }
+
+    /* ── WAS DEN SALON UNTERSCHEIDET ── */
+    #unterschied {
+      background: var(--dark);
+      padding: 120px 48px;
+    }
+    .unterschied-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .unterschied-heading {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3.5vw, 48px);
+      font-weight: 400; line-height: 1.2; color: var(--cream);
+      max-width: 700px; margin-bottom: 64px;
+    }
+    .unterschied-heading em { font-style: italic; color: var(--rose); }
+    .unterschied-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .unterschied-card {
+      background: rgba(240,235,227,.04);
+      border: 1px solid rgba(240,235,227,.08);
+      padding: 40px 36px;
+      transition: background .3s, border-color .3s;
+    }
+    .unterschied-card:hover {
+      background: rgba(232,168,124,.06);
+      border-color: rgba(232,168,124,.2);
+    }
+    .u-num {
+      font-family: var(--serif); font-size: 40px; font-weight: 400;
+      font-style: italic; color: rgba(232,168,124,.3);
+      line-height: 1; margin-bottom: 20px;
+    }
+    .u-title {
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--rose);
+      margin-bottom: 14px;
+    }
+    .u-body {
+      font-family: var(--serif); font-size: 16px; line-height: 1.8;
+      color: rgba(240,235,227,.65);
+    }
+
+    .beauvoir-quote {
+      margin-top: 80px; padding: 60px;
+      border-left: 2px solid var(--rose);
+      max-width: 800px;
+    }
+    .beauvoir-quote p {
+      font-family: var(--serif); font-size: clamp(20px, 2.5vw, 30px);
+      font-style: italic; line-height: 1.5; color: var(--cream);
+      margin-bottom: 20px;
+    }
+    .beauvoir-quote cite {
+      font-family: var(--sans); font-size: 11px; font-weight: 400;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+      font-style: normal;
+    }
+
+    /* ── DAS ZINE ── */
+    #zine {
+      background: var(--cream);
+      color: var(--dark);
+      padding: 120px 48px;
+    }
+    .zine-inner {
+      max-width: 1100px; margin: 0 auto;
+    }
+    .zine-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 64px; gap: 40px;
+      padding-bottom: 40px; border-bottom: 1px solid #d4cec6;
+    }
+    .zine-title-block {}
+    .zine-heading {
+      font-family: var(--serif);
+      font-size: clamp(38px, 5vw, 68px);
+      font-weight: 400; line-height: 1; color: var(--dark);
+    }
+    .zine-heading em { font-style: italic; color: var(--rose-d); }
+    .zine-desc {
+      font-family: var(--sans); font-size: 11px; font-weight: 400;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+      margin-top: 16px; line-height: 1.8; max-width: 340px;
+    }
+    .zine-spec {
+      text-align: right;
+    }
+    .zine-spec-item {
+      font-family: var(--sans); font-size: 11px; font-weight: 400;
+      letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+      line-height: 2.2;
+    }
+    .zine-spec-item strong { color: var(--dark); font-weight: 500; }
+
+    .zine-pages {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+    }
+    .zine-page {
+      aspect-ratio: 5 / 7;
+      background: var(--dark);
+      padding: 28px 24px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .zine-page:nth-child(even) { background: #2a2420; }
+    .zine-page-num {
+      font-family: var(--sans); font-size: 9px; font-weight: 400;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--rose);
+    }
+    .zine-page-title {
+      font-family: var(--serif); font-size: 20px; font-weight: 400;
+      font-style: italic; color: var(--cream); line-height: 1.3;
+    }
+    .zine-page-tag {
+      font-family: var(--sans); font-size: 9px; font-weight: 400;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(240,235,227,.35);
+    }
+
+    /* ── NÄCHSTER ABEND ── */
+    #abend {
+      background: var(--dark);
+      padding: 120px 48px;
+      text-align: center;
+    }
+    .abend-inner { max-width: 800px; margin: 0 auto; }
+    .abend-eyebrow {
+      font-family: var(--sans); font-size: 10px; font-weight: 400;
+      letter-spacing: .28em; text-transform: uppercase; color: var(--rose);
+      margin-bottom: 40px; display: block;
+    }
+    .abend-theme {
+      font-family: var(--serif);
+      font-size: clamp(30px, 4vw, 56px);
+      font-weight: 400; font-style: italic;
+      line-height: 1.25; color: var(--cream);
+      margin-bottom: 48px;
+    }
+    .abend-details {
+      display: flex; align-items: center; justify-content: center;
+      gap: 32px; flex-wrap: wrap; margin-bottom: 56px;
+    }
+    .abend-detail {
+      font-family: var(--sans); font-size: 11px; font-weight: 400;
+      letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    }
+    .abend-dot { color: var(--rose); }
+
+    .btn-rose {
+      display: inline-block;
+      font-family: var(--sans); font-size: 11px; font-weight: 500;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--dark); background: var(--rose);
+      padding: 16px 40px; text-decoration: none;
+      transition: background .2s;
+    }
+    .btn-rose:hover { background: var(--rose-d); }
+
+    .btn-outline {
+      display: inline-block;
+      font-family: var(--sans); font-size: 11px; font-weight: 400;
+      letter-spacing: .2em; text-transform: uppercase;
+      color: var(--cream); border: 1px solid rgba(240,235,227,.25);
+      padding: 16px 40px; text-decoration: none; margin-left: 16px;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-outline:hover { border-color: var(--rose); color: var(--rose); }
+
+    /* ── ÜBER ── */
+    #ueber {
+      background: var(--cream);
+      color: var(--dark);
+      padding: 120px 48px;
+    }
+    .ueber-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+      align-items: center;
+    }
+    .ueber-img-wrap {
+      aspect-ratio: 4/5;
+      background: var(--dark);
+      overflow: hidden; position: relative;
+    }
+    .ueber-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: center top;
+      mix-blend-mode: multiply;
+      opacity: .85;
+    }
+    .ueber-img-label {
+      position: absolute; bottom: 20px; left: 20px;
+      font-family: var(--sans); font-size: 9px; font-weight: 400;
+      letter-spacing: .2em; text-transform: uppercase; color: var(--cream);
+    }
+    .ueber-text {}
+    .ueber-heading {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; line-height: 1.15;
+      color: var(--dark); margin-bottom: 28px;
+    }
+    .ueber-heading em { font-style: italic; color: var(--rose-d); }
+    .ueber-body {
+      font-family: var(--serif); font-size: 17px; line-height: 1.9;
+      color: #3a3430;
+    }
+    .ueber-body p + p { margin-top: 18px; }
+    .ueber-inspiration {
+      margin-top: 36px; padding: 28px 28px 28px 24px;
+      border-left: 2px solid var(--rose-d);
+      font-family: var(--serif); font-size: 15px; font-style: italic;
+      color: #5a5048; line-height: 1.75;
+    }
+
+    /* ── ANMELDEN ── */
+    #anmelden {
+      background: var(--dark);
+      padding: 120px 48px;
+      text-align: center;
+    }
+    .anmelden-inner { max-width: 560px; margin: 0 auto; }
+    .anmelden-heading {
+      font-family: var(--serif);
+      font-size: clamp(32px, 4vw, 52px);
+      font-weight: 400; line-height: 1.2; color: var(--cream);
+      margin-bottom: 20px;
+    }
+    .anmelden-heading em { font-style: italic; color: var(--rose); }
+    .anmelden-sub {
+      font-family: var(--serif); font-size: 17px; font-style: italic;
+      color: rgba(240,235,227,.55); line-height: 1.7; margin-bottom: 48px;
+    }
+    .anmelden-form { display: flex; flex-direction: column; gap: 14px; }
+    .anmelden-input {
+      background: rgba(240,235,227,.05);
+      border: 1px solid rgba(240,235,227,.15);
+      padding: 16px 20px;
+      font-family: var(--sans); font-size: 14px; font-weight: 300;
+      color: var(--cream); outline: none; width: 100%;
+      transition: border-color .2s;
+    }
+    .anmelden-input::placeholder { color: rgba(240,235,227,.3); }
+    .anmelden-input:focus { border-color: var(--rose); }
+    .anmelden-note {
+      font-family: var(--sans); font-size: 10px; font-weight: 300;
+      letter-spacing: .12em; color: rgba(240,235,227,.3);
+      margin-top: 16px; line-height: 1.7;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(240,235,227,.08);
+      padding: 48px 48px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      display: flex; align-items: center; gap: 12px;
+      text-decoration: none; color: var(--cream);
+    }
+    .footer-wordmark {
+      font-family: var(--serif); font-size: 16px; font-weight: 400;
+      letter-spacing: .14em; text-transform: uppercase;
+    }
+    .footer-links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .footer-links a {
+      font-family: var(--sans); font-size: 11px; font-weight: 300;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--rose); }
+    .footer-copy {
+      font-family: var(--sans); font-size: 10px; font-weight: 300;
+      letter-spacing: .12em; color: rgba(122,112,104,.5);
+    }
+
+    /* ── FADE IN ── */
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-d1 { transition-delay: .1s; }
+    .reveal-d2 { transition-delay: .22s; }
+    .reveal-d3 { transition-delay: .34s; }
+    .reveal-d4 { transition-delay: .46s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav { padding: 20px 24px; }
+      #hero, #these, #salon, #unterschied, #zine, #abend, #ueber, #anmelden { padding-left: 24px; padding-right: 24px; }
+      .salon-inner, .ueber-inner { grid-template-columns: 1fr; }
+      .salon-left { position: static; }
+      .unterschied-grid { grid-template-columns: 1fr; }
+      .zine-pages { grid-template-columns: repeat(2, 1fr); }
+      .zine-header { flex-direction: column; align-items: flex-start; }
+      .zine-spec { text-align: left; }
+      .footer-inner { flex-direction: column; gap: 24px; text-align: center; }
+      .footer-links { flex-wrap: wrap; justify-content: center; }
+      .btn-outline { margin-left: 0; margin-top: 12px; }
+      .abend-details { flex-direction: column; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">
+    <svg class="nav-eye" width="32" height="20" viewBox="0 0 220 140" fill="none">
+      <g class="eye-lid-group" style="transform-origin: 110px 70px;">
+        <ellipse cx="110" cy="70" rx="104" ry="65" stroke="#f0ebe3" stroke-width="3" fill="none"/>
+        <circle cx="110" cy="70" r="50" fill="#f0ebe3"/>
+      </g>
+    </svg>
+    <span class="nav-wordmark">Salon</span>
+  </a>
+  <a href="#anmelden" class="nav-cta">Anmelden</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-label reveal">Wien — Ein Abend im Monat</p>
+  <div class="hero-eye-wrap reveal reveal-d1">
+    <svg class="eye-svg" width="220" height="140" viewBox="0 0 220 140" fill="none">
+      <g class="eye-lid-group" style="transform-origin: 110px 70px;">
+        <ellipse cx="110" cy="70" rx="104" ry="65" stroke="#f0ebe3" stroke-width="2" fill="none"/>
+        <circle cx="110" cy="70" r="50" fill="#f0ebe3"/>
+      </g>
+    </svg>
+  </div>
+  <h1 class="hero-title reveal reveal-d2">Salon</h1>
+  <p class="hero-tagline reveal reveal-d3">Wissen, Gemeinschaft und Freude<br>sind politische Akte.</p>
+  <p class="hero-date reveal reveal-d4">Nächster Abend — <span>Herbst 2026 · Wien</span></p>
+  <div class="scroll-hint" aria-hidden="true">
+    <div class="scroll-hint-line"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DIE THESE -->
+<section id="these">
+  <span class="section-num reveal">01 — Die These</span>
+  <p class="these-quote reveal reveal-d1">
+    „Wissen, Gemeinschaft und Freude<br>sind politische Akte —<br>besonders für Frauen und queere Menschen."
+  </p>
+  <p class="these-attr reveal reveal-d2">Natalie Frantsits, Wien 2026</p>
+  <div class="these-body reveal reveal-d3">
+    <p>Ich glaube daran, dass Bildung Macht schafft. Dass Arbeit nicht hart sein muss, sondern durch Freude, Liebe und gegenseitigen Support entsteht. Dass wir Community pflegen müssen — bewusst, wiederholt, mit Sorgfalt.</p>
+    <p>Inspiriert von Simone de Beauvoir und den Existentialisten: Freiheit als Haltung, nicht als Privileg. Hochsystemkritisch. Feministisch. Queer-solidarisch.</p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WAS IST DER SALON -->
+<section id="salon">
+  <div class="salon-inner">
+    <div class="salon-left reveal">
+      <span class="salon-label">02 — Was ist der Salon</span>
+      <h2 class="salon-heading">Klein.<br>Kuratiert.<br><em>Queer-feministisch.</em></h2>
+      <p class="salon-sub">
+        Wien · Ein Abend im Monat<br>
+        Musik, Bücher, Ideen, Gemeinschaft<br>
+        Skill Sharing horizontal, nicht von oben
+      </p>
+    </div>
+    <div class="salon-right">
+      <div class="salon-block reveal">
+        <p class="salon-block-title">Der Abend</p>
+        <div class="salon-block-body">
+          <p>Ein wiederkehrendes Format in Wien. Jeder Abend hat ein Thema, eine These, eine Frage. Menschen kommen zusammen, teilen ihr Wissen, hören Musik, lesen, denken.</p>
+          <p>Nicht Vortrag. Nicht Netzwerkevent. Etwas dazwischen — ein Abend der bleibt.</p>
+        </div>
+      </div>
+      <div class="salon-block reveal reveal-d1">
+        <p class="salon-block-title">Die Tradition</p>
+        <div class="salon-block-body">
+          <p>Wien hat eine tiefe Salon-Tradition — Bertha von Suttner, Berta Zuckerkandl, die Kaffeehäuser als informelle Salons. Der Salon knüpft daran an.</p>
+          <p>Etwas das existiert hat und wieder gebraucht wird.</p>
+        </div>
+      </div>
+      <div class="salon-block reveal reveal-d2">
+        <p class="salon-block-title">Die Inspiration</p>
+        <div class="salon-block-body">
+          <p>Inspiriert von der Fábrica Braço de Prata in Lissabon — einem alten Industriegebäude das zum Kulturzentrum wurde, wo Bücher, Konzerte, Ausstellungen und Community ohne Trennwände koexistieren.</p>
+          <p>Und vom Improvisationsraum Prisma: klein, intim, experimentell, für Menschen die aktiv machen, nicht nur konsumieren.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WAS DEN SALON UNTERSCHEIDET -->
+<section id="unterschied">
+  <div class="unterschied-inner">
+    <h2 class="unterschied-heading reveal">
+      Was queer-feministische Räume in Wien fast nie haben: <em>quantitatives Denken, Finanzkompetenz, Datenverständnis.</em>
+    </h2>
+    <div class="unterschied-grid">
+      <div class="unterschied-card reveal">
+        <p class="u-num">01</p>
+        <p class="u-title">Data Science als Ermächtigung</p>
+        <p class="u-body">Nicht als Karrierethema — als Werkzeug für alle. Daten lesen, verstehen, nutzen. Weil Information Macht ist.</p>
+      </div>
+      <div class="unterschied-card reveal reveal-d1">
+        <p class="u-num">02</p>
+        <p class="u-title">Finanzwissen</p>
+        <p class="u-body">Damit Frauen und queere Menschen ihre eigene wirtschaftliche Realität verstehen und gestalten können. Nicht für den Aktienmarkt.</p>
+      </div>
+      <div class="unterschied-card reveal reveal-d2">
+        <p class="u-num">03</p>
+        <p class="u-title">Programmieren für alle</p>
+        <p class="u-body">Als Sprache der Gegenwart, die jede sprechen können sollte. Skill Sharing horizontal, nicht von oben nach unten.</p>
+      </div>
+    </div>
+    <div class="beauvoir-quote reveal">
+      <p>„Wirtschaftliche Unabhängigkeit ist die Voraussetzung für Freiheit."</p>
+      <cite>Simone de Beauvoir — Der Salon gibt Menschen die Werkzeuge dafür.</cite>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DAS ZINE -->
+<section id="zine">
+  <div class="zine-inner">
+    <div class="zine-header reveal">
+      <div class="zine-title-block">
+        <h2 class="zine-heading">Das <em>Zine</em></h2>
+        <p class="zine-desc">A5 · Schwarz-Weiß · Selbst gedruckt<br>Jeder Abend bekommt sein eigenes Heft.</p>
+      </div>
+      <div class="zine-spec">
+        <p class="zine-spec-item"><strong>Format</strong> — A5 gefaltet zu A6, 8 Seiten</p>
+        <p class="zine-spec-item"><strong>Druck</strong> — Laserdrucker oder Risograph</p>
+        <p class="zine-spec-item"><strong>Auflage</strong> — 20–30 Stück pro Abend</p>
+        <p class="zine-spec-item"><strong>Akzent</strong> — Schwarz + Rose</p>
+      </div>
+    </div>
+    <div class="zine-pages">
+      <div class="zine-page reveal">
+        <span class="zine-page-num">S. 1</span>
+        <p class="zine-page-title">Cover</p>
+        <span class="zine-page-tag">Salon · Thema · Datum</span>
+      </div>
+      <div class="zine-page reveal reveal-d1">
+        <span class="zine-page-num">S. 2</span>
+        <p class="zine-page-title">Editorial</p>
+        <span class="zine-page-tag">Die These · Warum jetzt</span>
+      </div>
+      <div class="zine-page reveal reveal-d2">
+        <span class="zine-page-num">S. 3–4</span>
+        <p class="zine-page-title">Wissen</p>
+        <span class="zine-page-tag">Text zum Thema · offene Fragen</span>
+      </div>
+      <div class="zine-page reveal reveal-d3">
+        <span class="zine-page-num">S. 5–6</span>
+        <p class="zine-page-title">Ressourcen</p>
+        <span class="zine-page-tag">1 Buch · 1 Song · 1 Datensatz · 1 Frage</span>
+      </div>
+      <div class="zine-page reveal">
+        <span class="zine-page-num">S. 7</span>
+        <p class="zine-page-title">Community</p>
+        <span class="zine-page-tag">Wer war da · was wurde geteilt</span>
+      </div>
+      <div class="zine-page reveal reveal-d1">
+        <span class="zine-page-num">S. 8</span>
+        <p class="zine-page-title">Rückseite</p>
+        <span class="zine-page-tag">Nächster Abend · Kontakt · Wien</span>
+      </div>
+      <div class="zine-page reveal reveal-d2" style="grid-column: span 2; aspect-ratio: unset; min-height: 180px; background: #1a1714; border: 1px solid #e8a87c; display: flex; align-items: center; justify-content: center; padding: 40px;">
+        <p style="font-family: var(--serif); font-size: clamp(18px,2vw,28px); font-style: italic; color: var(--rose); text-align: center; line-height: 1.4;">
+          „Was wäre, wenn Wissen<br>allen gehören würde?"
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NÄCHSTER ABEND -->
+<section id="abend">
+  <div class="abend-inner">
+    <span class="abend-eyebrow reveal">Erste Ausgabe — Herbst 2026</span>
+    <h2 class="abend-theme reveal reveal-d1">
+      „Was wäre, wenn Wissen<br>allen gehören würde?"
+    </h2>
+    <div class="abend-details reveal reveal-d2">
+      <span class="abend-detail">Wien</span>
+      <span class="abend-dot">·</span>
+      <span class="abend-detail">Herbst 2026</span>
+      <span class="abend-dot">·</span>
+      <span class="abend-detail">Klein &amp; Kuratiert</span>
+      <span class="abend-dot">·</span>
+      <span class="abend-detail">Ort folgt</span>
+    </div>
+    <div class="reveal reveal-d3">
+      <a href="#anmelden" class="btn-rose">Anmelden</a>
+      <a href="mailto:hello@nataliefrantsits.com" class="btn-outline">Schreib mir</a>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ÜBER -->
+<section id="ueber">
+  <div class="ueber-inner">
+    <div class="ueber-img-wrap reveal">
+      <img src="natalie.png" alt="Natalie Frantsits">
+      <span class="ueber-img-label">Natalie Frantsits · Wien</span>
+    </div>
+    <div class="ueber-text">
+      <span class="salon-label reveal">Über</span>
+      <h2 class="ueber-heading reveal reveal-d1">
+        Natalie<br><em>Frantsits</em>, MSc
+      </h2>
+      <div class="ueber-body reveal reveal-d2">
+        <p>Ich arbeite an der Schnittstelle von Wissen, Beziehung und Veränderung. Als Coach, Lehrende, Forscherin — und jetzt als Gastgeberin.</p>
+        <p>Der Salon ist kein Thema. Er ist eine Haltung. Ein Ort für Menschen die denken, machen, zweifeln, sich einbringen — ohne Hierarchie, ohne Programm von oben.</p>
+        <p>Das Netzwerk existiert bereits: Finanzen, Data, Mathematik, Informatik, soziale Arbeit, Musikwissenschaft, lokale Bands, Schule, Organisationsentwicklung.</p>
+      </div>
+      <div class="ueber-inspiration reveal reveal-d3">
+        Ein Dienstag in 5 Jahren: morgens schreiben, ein Coaching, Kaffee mit Freundinnen, abends einen Salon organisieren. Kein Chef der meine Zeit besitzt. Genug Leere um zu denken.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANMELDEN -->
+<section id="anmelden">
+  <div class="anmelden-inner">
+    <h2 class="anmelden-heading reveal">Dabei <em>sein.</em></h2>
+    <p class="anmelden-sub reveal reveal-d1">
+      Trag dich ein. Du bekommst eine kurze Nachricht wenn der erste Abend feststeht — Ort, Thema, Datum.
+    </p>
+    <form class="anmelden-form reveal reveal-d2" onsubmit="return false;">
+      <input class="anmelden-input" type="text" placeholder="Vorname">
+      <input class="anmelden-input" type="email" placeholder="E-Mail-Adresse">
+      <button type="submit" class="btn-rose" style="border:none; cursor:pointer; font-family: var(--sans); font-size: 11px; font-weight: 500; letter-spacing: .2em;">
+        Anmelden
+      </button>
+    </form>
+    <p class="anmelden-note reveal reveal-d3">
+      Kein Newsletter. Keine Werbung.<br>Nur eine Nachricht wenn es losgeht.
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <a href="#hero" class="footer-logo">
+      <svg width="20" height="13" viewBox="0 0 220 140" fill="none">
+        <ellipse cx="110" cy="70" rx="104" ry="65" stroke="#f0ebe3" stroke-width="5" fill="none"/>
+        <circle cx="110" cy="70" r="50" fill="#f0ebe3"/>
+      </svg>
+      <span class="footer-wordmark">Salon</span>
+    </a>
+    <ul class="footer-links">
+      <li><a href="#these">Die These</a></li>
+      <li><a href="#salon">Der Salon</a></li>
+      <li><a href="#zine">Das Zine</a></li>
+      <li><a href="#abend">Nächster Abend</a></li>
+      <li><a href="index.html">Coaching</a></li>
+    </ul>
+    <p class="footer-copy">© 2026 Natalie Frantsits · Wien</p>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(26,23,20,0.92)'
+      : 'transparent';
+    nav.style.backdropFilter = window.scrollY > 60 ? 'blur(12px)' : 'none';
+  });
+</script>
+</body>
+</html>
